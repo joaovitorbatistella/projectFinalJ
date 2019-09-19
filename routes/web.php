@@ -12,12 +12,17 @@
 */
 Auth::routes();
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 
 });
-
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+Route::get('/cadastroFornecedor', 'fornecedorController@index')->name('cadastroFornecedor');
+Route::get('/fornecedor/create','fornecedorController@create');
 Route::get('/cadastrocliente', 'CadastroCliente@index')->name('cadastrocliente');
+Route::post('/cadastroFornecedor', 'fornecedorController@store');
 
 //php artisan key:generate
 //composer dump-autoload
