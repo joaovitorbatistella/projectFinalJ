@@ -15,9 +15,23 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'nivel', 'cpf', 'telefone', 'rua', 'numero', 'cidade', 'uf', 'bairro',
     ];
 
+    /*
+                $table->increments('id');
+            $table->string('nivel');
+            $table->string('telefone');
+            $table->string('cpf');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('rua');
+            $table->string('numero');
+            $table->string('cidade');
+            $table->string('uf');
+            $table->string('bairro');
+    */
     /**
      * The attributes that should be hidden for arrays.
      *

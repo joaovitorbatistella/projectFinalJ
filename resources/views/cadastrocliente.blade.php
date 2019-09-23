@@ -1,3 +1,14 @@
+@if ($errors->any())
+	<div class="container">
+	  <div class="alert alert-danger">
+	    <ul>
+	      @foreach ($errors->all() as $error)
+	      <li>{{ $error }}</li>
+	      @endforeach
+	    </ul>
+	  </div>
+	</div>
+  @endif
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -6,11 +17,20 @@
 <!DOCTYPE html>
 <head>
 
-    
+    <!--
+            $table->date('dataNascimento'); 
+            $table->integer('nivel'); 
+            $table->string('telefone');
+            $table->string('cpf');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+      -->
 </head>
 <body>
 
-<form class="form-horizontal">
+<form class="form-horizontal" method="POST" action="{{ route('register') }}">
+@csrf
 <fieldset>
 <div class="panel panel-primary">
     <div class="panel-heading">Cadastro de Cliente</div>
@@ -37,10 +57,32 @@
 <div class="form-group">
   <label class="col-md-2 control-label" for="Nome">Nome <h11>*</h11></label>  
   <div class="col-md-8">
-  <input id="Nome" name="Nome" placeholder="" class="form-control input-md" required="" type="text">
+  <input id="name" name="name" placeholder="" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" required="" type="text">
+  @if ($errors->has('name'))
+      <span class="invalid-feedback">
+          <strong>{{ $errors->first('name') }}</strong>
+      </span>
+  @endif
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-md-2 control-label" for="password">Senha <h11>*</h11></label>  
+  <div class="col-md-8">
+  <input id="password" name="password" placeholder="" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" required="" type="password">
+  @if ($errors->has('password'))
+      <span class="invalid-feedback">
+          <strong>{{ $errors->first('password') }}</strong>
+      </span>
+  @endif
   </div>
 </div>
 
+<div class="form-group row">
+        <label for="password-confirm" class="col-md-2 col-form-label text-md-right">Confirmar Senha</label>
+        <div class="col-md-8">
+            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+        </div>
+    </div>
 <!-- Text input-->
 <div class="form-group">
   <label class="col-md-2 control-label" for="Nome">CPF <h11>*</h11></label>  
@@ -48,25 +90,10 @@
   <input id="cpf" name="cpf" placeholder="Apenas números" class="form-control input-md" required="" type="text" maxlength="11" pattern="[0-9]+$">
   </div>
   
-  <label class="col-md-1 control-label" for="Nome">Nascimento<h11>*</h11></label>  
-  <div class="col-md-2">
-  <input id="dtnasc" name="dtnasc" placeholder="DD/MM/AAAA" class="form-control input-md" required="" type="text" maxlength="10" OnKeyPress="formatar('##/##/####', this)" onBlur="showhide()">
-</div>
+  
 
 <!-- Multiple Radios (inline) -->
 
-  <label class="col-md-1 control-label" for="radios">Sexo <h11>*</h11></label>
-  <div class="col-md-4"> 
-    <label required="" class="radio-inline" for="radios-0" >
-      <input name="sexo" id="sexo" value="feminino" type="radio" required>
-      Feminino
-    </label> 
-    <label class="radio-inline" for="radios-1">
-      <input name="sexo" id="sexo" value="masculino" type="radio">
-      Masculino
-    </label>
-  </div>
-</div>
 
 <!-- Prepended text-->
 <div class="form-group">
@@ -74,7 +101,12 @@
   <div class="col-md-2">
     <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-      <input id="prependedtext" name="prependedtext" class="form-control" placeholder="XX XXXXX-XXXX" required="" type="text" maxlength="13" pattern="\[0-9]{2}\ [0-9]{4,6}-[0-9]{3,4}$"
+      <input id="telefone" name="telefone" class="form-control" placeholder="XX XXXXX-XXXX" required="" type="text" maxlength="13" pattern="\[0-9]{2}\ [0-9]{4,6}-[0-9]{3,4}$"
+      @if ($errors->has('telefone'))
+        <span class="invalid-feedback">
+            <strong>{{ $errors->first('telefone') }}</strong>
+        </span>
+      @endif
       OnKeyPress="formatar('## #####-####', this)">
     </div>
   </div>
@@ -86,19 +118,18 @@
   <div class="col-md-5">
     <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-      <input id="prependedtext" name="prependedtext" class="form-control" placeholder="email@email.com" required="" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" >
+      <input id="email" name="email" class="form-control" placeholder="email@email.com" required="" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" >
+      @if ($errors->has('email'))
+        <span class="invalid-feedback">
+            <strong>{{ $errors->first('email') }}</strong>
+        </span>
+      @endif
     </div>
   </div>
 </div>
 
 
 <!-- Search input-->
-<div class="form-group">
-  <label class="col-md-2 control-label" for="CEP">CEP <h11>*</h11></label>
-  <div class="col-md-2">
-    <input id="cep" name="cep" placeholder="Apenas números" class="form-control input-md" required="" value="" type="search" maxlength="8" pattern="[0-9]+$">
-  </div>
-</div>
 
 <!-- Prepended text-->
 <div class="form-group">
@@ -107,13 +138,23 @@
     <div class="input-group">
       <span class="input-group-addon">Rua</span>
       <input id="rua" name="rua" class="form-control" placeholder="" required="" type="text">
+      @if ($errors->has('rua'))
+        <span class="invalid-feedback">
+            <strong>{{ $errors->first('rua') }}</strong>
+        </span>
+      @endif
     </div>
     
   </div>
     <div class="col-md-2">
     <div class="input-group">
       <span class="input-group-addon">Nº <h11>*</h11></span>
-      <input id="numero" name="numero" class="form-control" placeholder="" required=""  type="text">
+      <input id="numero" name="numero" class="form-control" placeholder="" required=""  type="numeric">
+      @if ($errors->has('numero'))
+        <span class="invalid-feedback">
+            <strong>{{ $errors->first('numero') }}</strong>
+        </span>
+      @endif
     </div>
     
   </div>
@@ -122,6 +163,11 @@
     <div class="input-group">
       <span class="input-group-addon">Bairro</span>
       <input id="bairro" name="bairro" class="form-control" placeholder="" required="" type="text">
+      @if ($errors->has('bairro'))
+        <span class="invalid-feedback">
+            <strong>{{ $errors->first('bairro') }}</strong>
+        </span>
+      @endif
     </div>
     
   </div>
@@ -133,6 +179,11 @@
     <div class="input-group">
       <span class="input-group-addon">Cidade</span>
       <input id="cidade" name="cidade" class="form-control" placeholder="" required=""   type="text">
+      @if ($errors->has('cidade'))
+        <span class="invalid-feedback">
+            <strong>{{ $errors->first('cidade') }}</strong>
+        </span>
+      @endif
     </div>
     
   </div>
@@ -140,7 +191,12 @@
    <div class="col-md-2">
     <div class="input-group">
       <span class="input-group-addon">Estado</span>
-      <input id="estado" name="estado" class="form-control" placeholder="" required=""   type="text">
+      <input id="uf" name="uf" class="form-control" placeholder="" required=""   type="text">
+      @if ($errors->has('uf'))
+        <span class="invalid-feedback">
+            <strong>{{ $errors->first('uf') }}</strong>
+        </span>
+      @endif
     </div>
     
   </div>
@@ -152,8 +208,8 @@
   <div class="col-md-3">
     <select required id="nivel" name="nivel" class="form-control">
     <option value=""></option>
-      <option value="Analfabeto">Cliente</option>
-      <option value="Fundamental Incompleto">Administrador</option>
+      <option value="0">Cliente</option>
+      <option value="1">Administrador</option>
     </select>
   </div>
 </div>
