@@ -29,7 +29,7 @@
 </head>
 <body>
 
-<form class="form-horizontal" method="POST" action="{{ route('register') }}">
+<form class="form-horizontal" method="POST" action="/cadastrocliente">
 @csrf
 <fieldset>
 <div class="panel panel-primary">
@@ -77,12 +77,6 @@
   </div>
 </div>
 
-<div class="form-group row">
-        <label for="password-confirm" class="col-md-2 col-form-label text-md-right">Confirmar Senha</label>
-        <div class="col-md-8">
-            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-        </div>
-    </div>
 <!-- Text input-->
 <div class="form-group">
   <label class="col-md-2 control-label" for="Nome">CPF <h11>*</h11></label>  
